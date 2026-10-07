@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mert Can Accoy | Terhis Geri Sayımı</title>
+
+<style>
+
+/* =========================================================
+   GENEL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080b08;
+    color: white;
+}
+
+
+/* =========================================================
+   SİNEMATİK ARKA PLAN
+========================================================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(83, 103, 58, 0.28),
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(129, 70, 25, 0.13),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #111710 0%,
+            #080b08 45%,
+            #11140d 100%
+        );
+
+    z-index: -10;
+}
+
+
+/* Dağ / atmosfer silüeti */
+
+.background::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            transparent 52%,
+            rgba(0,0,0,.65) 53%,
+            rgba(0,0,0,.88) 68%
+        );
+
+    opacity: .8;
+}
+
+
+/* =========================================================
+   KAMUFLAJ DESENİ
+========================================================= */
+
+.camo {
+    position: absolute;
+    inset: -20%;
+
+    opacity: .12;
+
+    background:
+        radial-gradient(
+            ellipse at 15% 25%,
+            #71815a 0 6%,
+            transparent 7%
+        ),
+        radial-gradient(
+            ellipse at 40% 70%,
+            #303a27 0 9%,
+            transparent 10%
+        ),
+        radial-gradient(
+            ellipse at 80% 25%,
+            #596648 0 8%,
+            transparent 9%
+        ),
+        radial-gradient(
+            ellipse at 70% 80%,
+            #252c1e 0 11%,
+            transparent 12%
+        );
+
+    background-size:
+        320px 280px,
+        420px 350px,
+        380px 320px,
+        500px 420px;
+
+    animation: camoMove 35s linear infinite;
+}
+
+@keyframes camoMove {
+
+    0% {
+        transform: translate(0,0) scale(1.1);
+    }
+
+    50% {
+        transform: translate(-4%,3%) scale(1.15);
+    }
+
+    100% {
+        transform: translate(0,0) scale(1.1);
+    }
+
+}
+
+
+/* =========================================================
+   DUMAN
+========================================================= */
+
+.smoke {
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(170,180,150,.10),
+            transparent 65%
+        );
+
+    filter: blur(50px);
+
+    animation: smoke 18s ease-in-out infinite alternate;
+}
+
+.smoke.one {
+    left: -150px;
+    top: 15%;
+}
+
+.smoke.two {
+    right: -180px;
+    bottom: 5%;
+
+    animation-delay: -7s;
+}
+
+.smoke.three {
+    left: 40%;
+    bottom: -250px;
+
+    animation-delay: -12s;
+}
+
+@keyframes smoke {
+
+    from {
+        transform: translate(-30px,20px) scale(1);
+        opacity: .35;
+    }
+
+    to {
+        transform: translate(70px,-40px) scale(1.35);
+        opacity: .65;
+    }
+
+}
+
+
+/* =========================================================
+   PARÇACIKLAR
+========================================================= */
+
+.particles {
+    position: absolute;
+    inset: 0;
+}
+
+.particle {
+    position: absolute;
+
+    width: 3px;
+    height: 3px;
+
+    border-radius: 50%;
+
+    background: #b8c88c;
+
+    box-shadow:
+        0 0 10px #aabd76;
+
+    animation:
+        particleMove
+        var(--duration)
+        linear
+        infinite;
+
+    animation-delay: var(--delay);
+
+    opacity: 0;
+}
+
+@keyframes particleMove {
+
+    0% {
+        transform:
+            translate3d(
+                var(--x),
+                110vh,
+                0
+            );
+
+        opacity: 0;
+    }
+
+    10% {
+        opacity: .8;
+    }
+
+    90% {
+        opacity: .45;
+    }
+
+    100% {
+        transform:
+            translate3d(
+                calc(var(--x) + var(--drift)),
+                -20vh,
+                0
+            );
+
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   HAREKETLİ MİĞFERLER
+========================================================= */
+
+.helmet {
+    position: absolute;
+
+    width: 105px;
+    height: 70px;
+
+    opacity: .25;
+
+    filter:
+        drop-shadow(
+            0 15px 15px rgba(0,0,0,.7)
+        );
+
+    animation:
+        helmetFloat
+        var(--speed)
+        ease-in-out
+        infinite alternate;
+
+    animation-delay: var(--delay);
+
+    pointer-events: none;
+}
+
+
+/* Miğfer gövdesi */
+
+.helmet::before {
+    content: "";
+
+    position: absolute;
+
+    width: 100%;
+    height: 72%;
+
+    top: 5px;
+    left: 0;
+
+    border-radius:
+        55% 55% 35% 35%;
+
+    background:
+        radial-gradient(
+            ellipse at 30% 30%,
+            #727c56 0 12%,
+            transparent 13%
+        ),
+        radial-gradient(
+            ellipse at 70% 65%,
+            #28301f 0 16%,
+            transparent 17%
+        ),
+        radial-gradient(
+            ellipse at 45% 75%,
+            #4b5638 0 18%,
+            transparent 19%
+        ),
+        linear-gradient(
+            135deg,
+            #626d4b,
+            #1c2418 65%,
+            #10150e
+        );
+
+    border:
+        2px solid
+        rgba(160,175,120,.28);
+
+    box-shadow:
+        inset -12px -12px 25px rgba(0,0,0,.55),
+        inset 10px 8px 20px rgba(255,255,255,.08);
+}
+
+
+/* Miğfer siperliği */
+
+.helmet::after {
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 18px;
+
+    left: -7px;
+    bottom: 8px;
+
+    border-radius:
+        0 0 50% 50%;
+
+    background:
+        linear-gradient(
+            #27301f,
+            #11160e
+        );
+
+    border-bottom:
+        2px solid
+        rgba(170,185,135,.22);
+}
+
+@keyframes helmetFloat {
+
+    from {
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            rotate(-5deg);
+    }
+
+    to {
+        transform:
+            translate3d(
+                80px,
+                -45px,
+                0
+            )
+            rotate(7deg);
+    }
+
+}
+
+
+/* farklı boyutlar */
+
+.h1 {
+    left: 4%;
+    top: 12%;
+
+    --speed: 14s;
+    --delay: -5s;
+
+    transform: scale(.75);
+}
+
+.h2 {
+    right: 5%;
+    top: 18%;
+
+    --speed: 19s;
+    --delay: -12s;
+
+    transform: scale(.55);
+    opacity: .17;
+}
+
+.h3 {
+    left: 12%;
+    bottom: 8%;
+
+    --speed: 17s;
+    --delay: -8s;
+
+    transform: scale(.5);
+    opacity: .16;
+}
+
+.h4 {
+    right: 15%;
+    bottom: 4%;
+
+    --speed: 22s;
+    --delay: -18s;
+
+    transform: scale(.9);
+    opacity: .23;
+}
+
+.h5 {
+    left: 48%;
+    top: 5%;
+
+    --speed: 25s;
+    --delay: -13s;
+
+    transform: scale(.4);
+    opacity: .12;
+}
+
+.h6 {
+    right: 35%;
+    bottom: 15%;
+
+    --speed: 18s;
+    --delay: -3s;
+
+    transform: scale(.42);
+    opacity: .13;
+}
+
+
+/* =========================================================
+   KÜNYELER
+========================================================= */
+
+.tag {
+    position: absolute;
+
+    width: 48px;
+    height: 85px;
+
+    border:
+        1px solid
+        rgba(180,190,160,.35);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #515443,
+            #1c2118
+        );
+
+    box-shadow:
+        0 15px 30px rgba(0,0,0,.55);
+
+    opacity: .25;
+
+    animation:
+        tagFloat
+        var(--speed)
+        ease-in-out
+        infinite alternate;
+}
+
+.tag::before {
+    content: "";
+
+    position: absolute;
+
+    width: 9px;
+    height: 9px;
+
+    border:
+        1px solid
+        rgba(200,210,180,.5);
+
+    border-radius: 50%;
+
+    top: 8px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.tag::after {
+    content: "MC";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 40%;
+
+    text-align: center;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #b6c099;
+}
+
+.tag.one {
+    left: 25%;
+    top: 7%;
+
+    --speed: 12s;
+}
+
+.tag.two {
+    right: 26%;
+    top: 30%;
+
+    --speed: 17s;
+
+    transform: rotate(18deg) scale(.7);
+}
+
+.tag.three {
+    left: 7%;
+    bottom: 28%;
+
+    --speed: 21s;
+
+    transform: rotate(-25deg) scale(.6);
+}
+
+@keyframes tagFloat {
+
+    from {
+        transform:
+            translateY(20px)
+            rotate(-12deg);
+    }
+
+    to {
+        transform:
+            translateY(-70px)
+            rotate(20deg);
+    }
+
+}
+
+
+/* =========================================================
+   ANA İÇERİK
+========================================================= */
+
+.container {
+    position: relative;
+
+    width: min(1050px, 92vw);
+
+    height: 100vh;
+
+    margin: auto;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+/* =========================================================
+   CAM KART
+========================================================= */
+
+.card {
+
+    width: min(900px, 100%);
+
+    padding:
+        48px
+        55px
+        42px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,22,14,.86),
+            rgba(5,8,6,.91)
+        );
+
+    border:
+        1px solid
+        rgba(174,191,137,.30);
+
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.72),
+        inset 0 1px rgba(255,255,255,.07);
+
+    backdrop-filter: blur(12px);
+
+    position: relative;
+
+    z-index: 10;
+}
+
+
+/* köşe çizgileri */
+
+.card::before,
+.card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 35px;
+    height: 35px;
+
+    border-color: #a9bb83;
+}
+
+.card::before {
+
+    left: -1px;
+    top: -1px;
+
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.card::after {
+
+    right: -1px;
+    bottom: -1px;
+
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+}
+
+
+/* =========================================================
+   ÜST ETİKET
+========================================================= */
+
+.top {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    color: #77816d;
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 35px;
+}
+
+.live {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.live-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #b7ce82;
+
+    box-shadow:
+        0 0 12px #b7ce82;
+
+    animation:
+        blink
+        1.5s
+        infinite;
+}
+
+@keyframes blink {
+
+    50% {
+        opacity: .25;
+    }
+
+}
+
+
+/* =========================================================
+   BAŞLIK
+========================================================= */
+
+.title {
+
+    text-align: center;
+
+    font-family:
+        'Arial Narrow',
+        Arial,
+        sans-serif;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    letter-spacing: 5px;
+
+    font-size:
+        clamp(38px, 6vw, 72px);
+
+    line-height: .95;
+
+    text-shadow:
+        0 5px 25px rgba(0,0,0,.8);
+}
+
+.title span {
+
+    display: block;
+
+    margin-top: 9px;
+
+    color: #b7c78d;
+
+    font-size:
+        clamp(22px, 3vw, 36px);
+
+    letter-spacing: 8px;
+}
+
+
+/* =========================================================
+   TARİH
+========================================================= */
+
+.date {
+
+    text-align: center;
+
+    margin:
+        28px
+        auto
+        32px;
+
+    width: max-content;
+
+    max-width: 100%;
+
+    padding:
+        9px 24px;
+
+    border-top:
+        1px solid
+        rgba(180,195,150,.25);
+
+    border-bottom:
+        1px solid
+        rgba(180,195,150,.25);
+
+    color: #d0d7c7;
+
+    font-size: 14px;
+
+    letter-spacing: 5px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   SAYAÇ
+========================================================= */
+
+.countdown {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+
+.box {
+
+    position: relative;
+
+    padding:
+        27px
+        10px
+        20px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(55,69,40,.42),
+            rgba(8,12,8,.75)
+        );
+
+    border:
+        1px solid
+        rgba(174,193,137,.22);
+
+    overflow: hidden;
+}
+
+
+/* kutu üzerindeki kamuflaj */
+
+.box::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: .13;
+
+    background:
+        radial-gradient(
+            ellipse at 20% 30%,
+            #7c895e 0 12%,
+            transparent 13%
+        ),
+        radial-gradient(
+            ellipse at 80% 70%,
+            #252d1e 0 15%,
+            transparent 16%
+        );
+
+    pointer-events: none;
+}
+
+
+.number {
+
+    position: relative;
+
+    z-index: 2;
+
+    font-family:
+        'Arial Narrow',
+        Arial,
+        sans-serif;
+
+    font-weight: 800;
+
+    font-size:
+        clamp(48px, 7vw, 82px);
+
+    line-height: .9;
+
+    letter-spacing: 2px;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    color: #edf1e8;
+
+    text-shadow:
+        0 0 25px
+        rgba(190,210,145,.12);
+}
+
+
+.label {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 14px;
+
+    font-size: 9px;
+
+    letter-spacing: 4px;
+
+    color: #89947e;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ALT
+========================================================= */
+
+.bottom {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-top: 28px;
+
+    color: #677060;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+.bottom strong {
+
+    color: #9eaf7b;
+}
+
+
+/* çizgi */
+
+.line {
+
+    flex: 1;
+
+    height: 1px;
+
+    margin:
+        0 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(170,190,135,.35),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   MOBİL
+========================================================= */
+
+@media(max-width: 700px) {
+
+    body {
+        overflow: hidden;
+    }
+
+    .card {
+
+        padding:
+            30px
+            16px
+            25px;
+    }
+
+    .top {
+
+        margin-bottom: 25px;
+
+        font-size: 7px;
+
+        letter-spacing: 2px;
+    }
+
+    .title {
+
+        letter-spacing: 3px;
+
+        font-size: 38px;
+    }
+
+    .title span {
+
+        font-size: 21px;
+
+        letter-spacing: 4px;
+    }
+
+    .date {
+
+        margin:
+            22px
+            auto
+            25px;
+
+        font-size: 11px;
+
+        letter-spacing: 3px;
+    }
+
+    .countdown {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+    .box {
+
+        padding:
+            21px
+            5px
+            17px;
+    }
+
+    .number {
+
+        font-size: 57px;
+    }
+
+    .label {
+
+        font-size: 7px;
+
+        letter-spacing: 2px;
+    }
+
+    .bottom {
+
+        font-size: 6px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .helmet {
+
+        opacity: .13;
+    }
+
+}
+
+
+/* =========================================================
+   TELEFONDA ARKA PLAN HAREKETİNİ AZALT
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.001ms !important;
+
+        animation-iteration-count:
+            1 !important;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     ARKA PLAN
+======================================================= -->
+
+<div class="background">
+
+    <div class="camo"></div>
+
+    <div class="smoke one"></div>
+    <div class="smoke two"></div>
+    <div class="smoke three"></div>
+
+
+    <!-- MİĞFERLER -->
+
+    <div class="helmet h1"></div>
+    <div class="helmet h2"></div>
+    <div class="helmet h3"></div>
+    <div class="helmet h4"></div>
+    <div class="helmet h5"></div>
+    <div class="helmet h6"></div>
+
+
+    <!-- KÜNYELER -->
+
+    <div class="tag one"></div>
+    <div class="tag two"></div>
+    <div class="tag three"></div>
+
+
+    <!-- PARÇACIKLAR -->
+
+    <div class="particles" id="particles"></div>
+
+</div>
+
+
+
+<!-- =======================================================
+     ANA SAYFA
+======================================================= -->
+
+<main class="container">
+
+    <section class="card">
+
+
+        <div class="top">
+
+            <div>
+                PERSONNEL // MC-2026
+            </div>
+
+            <div class="live">
+
+                <span class="live-dot"></span>
+
+                COUNTDOWN ACTIVE
+
+            </div>
+
+        </div>
+
+
+
+        <h1 class="title">
+
+            MERT CAN ACCOY
+
+            <span>
+                TERHİS GERİ SAYIMI
+            </span>
+
+        </h1>
+
+
+
+        <div class="date">
+
+            28 EKİM 2026 • 00:00
+
+        </div>
+
+
+
+        <div class="countdown">
+
+
+            <div class="box">
+
+                <div
+                    class="number"
+                    id="days">
+                    00
+                </div>
+
+                <div class="label">
+                    Gün
+                </div>
+
+            </div>
+
+
+
+            <div class="box">
+
+                <div
+                    class="number"
+                    id="hours">
+                    00
+                </div>
+
+                <div class="label">
+                    Saat
+                </div>
+
+            </div>
+
+
+
+            <div class="box">
+
+                <div
+                    class="number"
+                    id="minutes">
+                    00
+                </div>
+
+                <div class="label">
+                    Dakika
+                </div>
+
+            </div>
+
+
+
+            <div class="box">
+
+                <div
+                    class="number"
+                    id="seconds">
+                    00
+                </div>
+
+                <div class="label">
+                    Saniye
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="bottom">
+
+            <strong>
+                MISSION // DEMOBILIZATION
+            </strong>
+
+            <div class="line"></div>
+
+            <span>
+                DAHA GÜZEL GÜNLERE
+            </span>
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+/* =========================================================
+   GERİ SAYIM
+========================================================= */
+
+/*
+   28 Ekim 2026 saat 00:00
+*/
+
+const targetDate =
+    new Date(
+        "2026-10-28T00:00:00"
+    ).getTime();
+
+
+function pad(number) {
+
+    return String(number)
+        .padStart(2, "0");
+
+}
+
+
+function updateCountdown() {
+
+    let difference =
+        targetDate - Date.now();
+
+
+    /* Tarih geçtiyse */
+
+    if (difference <= 0) {
+
+        document.getElementById("days")
+            .textContent = "00";
+
+        document.getElementById("hours")
+            .textContent = "00";
+
+        document.getElementById("minutes")
+            .textContent = "00";
+
+        document.getElementById("seconds")
+            .textContent = "00";
+
+        return;
+    }
+
+
+    /* Gün */
+
+    const days =
+        Math.floor(
+            difference / 86400000
+        );
+
+    difference %= 86400000;
+
+
+    /* Saat */
+
+    const hours =
+        Math.floor(
+            difference / 3600000
+        );
+
+    difference %= 3600000;
+
+
+    /* Dakika */
+
+    const minutes =
+        Math.floor(
+            difference / 60000
+        );
+
+
+    /* Saniye */
+
+    const seconds =
+        Math.floor(
+            (difference % 60000) / 1000
+        );
+
+
+    document.getElementById("days")
+        .textContent = days;
+
+    document.getElementById("hours")
+        .textContent = pad(hours);
+
+    document.getElementById("minutes")
+        .textContent = pad(minutes);
+
+    document.getElementById("seconds")
+        .textContent = pad(seconds);
+
+}
+
+
+updateCountdown();
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
+
+
+/* =========================================================
+   PARÇACIKLARI OTOMATİK OLUŞTUR
+========================================================= */
+
+const particleContainer =
+    document.getElementById(
+        "particles"
+    );
+
+
+for (
+    let i = 0;
+    i < 45;
+    i++
+) {
+
+    const particle =
+        document.createElement("div");
+
+    particle.className =
+        "particle";
+
+
+    particle.style.setProperty(
+        "--x",
+        Math.random() * 100 + "vw"
+    );
+
+
+    particle.style.setProperty(
+        "--drift",
+        (Math.random() * 160 - 80) + "px"
+    );
+
+
+    particle.style.setProperty(
+        "--duration",
+        (10 + Math.random() * 18) + "s"
+    );
+
+
+    particle.style.setProperty(
+        "--delay",
+        (-Math.random() * 20) + "s"
+    );
+
+
+    particleContainer.appendChild(
+        particle
+    );
+
+}
+
+</script>
+
+
+</body>
+</html>
